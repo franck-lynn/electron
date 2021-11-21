@@ -1,0 +1,35 @@
+{
+  "name": "plugin-t1-hello",
+  "version": "1.0.0",
+  "description": "vscode插件开发",
+  "comment-A1": "出现这个错误是因为没有配置engines, VScode 插件 属性“engines”是必要属性,其类型必须是 object ",
+  "comment-A2": "参考网址 https://www.cnblogs.com/mailyuan/p/13442005.html",
+  
+  "engines": {
+    "vscode": "^1.61.0"
+  },
+  
+  "comment-01": "扩展的激活事件", 
+  "activationEvents": [
+    "onCommand:helloworld.helloWorld"
+],
+  "comment-02": "入口文件, 配置为编译后的入口文件", 
+  "main": "./out/extension.js",
+  "comment-03": "贡献点, vscode 插件大部分功能配置都在这里", 
+  "contributes": {
+    "commands": [
+      {
+        "comment-04": "命令调用的函数名称", 
+        "command": "helloworld.helloWorld",
+        "comment-05": " title 显示在 ctrl+shift+p的命令上的名称", 
+				"title": "Hello World" 
+       }
+  ]},
+  "scripts": {
+    "comment-06": "babel 编译ts", 
+    "ts:build": "babel src --out-dir out --extensions .ts"
+  },
+  "author": "",
+  "license": "ISC" 
+ 
+}

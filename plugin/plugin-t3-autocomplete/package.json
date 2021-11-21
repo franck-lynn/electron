@@ -1,0 +1,87 @@
+{
+    "comment-B1": "插件的名字，应全部小写，不能有空格",
+    "name": "plugin-t3-autocomplete",
+    "comment-B2": "插件的友好显示名称，用于显示在应用市场，支持中文",
+    "displayName": "vscode插件demo",
+    "version": "1.0.0",
+    "comment-B3": "描述",
+    "description": "vscode插件开发",
+    "comment-B4": "关键字，用于应用市场搜索",
+    "keywords": [
+        "vscode",
+        "plugin",
+        "demo",
+        "hellloworld"
+    ],
+    "comment-A1": "出现这个错误是因为没有配置engines, VScode 插件 属性“engines”是必要属性,其类型必须是 object ",
+    "comment-A2": "参考网址 https://www.cnblogs.com/mailyuan/p/13442005.html",
+    "comment-B5": "表示插件最低支持的vscode版本",
+    "engines": {
+        "vscode": "^1.61.0"
+    },
+    "comment-B6": "插件应用市场分类，可选值： [Programming Languages, Snippets, Linters, Themes,",
+    "comment-B7": "Debuggers, Formatters, Keymaps, SCM Providers, Other, Extension Packs, Language Packs]",
+    "categories": [
+        "Other"
+    ],
+    "comment-B8": "插件图标，至少128x128像素 icon: images/icon.png , ",
+    "comment-01": "扩展的激活事件, helloworl命令, 调用helloworld 函数",
+    "activationEvents": [
+        "onCommand:helloworld.helloWorld"
+    ],
+    "comment-02": "入口文件, 配置为编译后的入口文件",
+    "main": "./out/extension.js",
+    "comment-03": "贡献点, vscode 插件大部分功能配置都在这里",
+    "contributes": {
+        "commont-c1": "插件配置项",
+        "configuration": {
+            "type": "object",
+            "commont-c1": "配置项标题，会显示在vscode的设置页",
+            "title": "vscode-plugin-demo",
+            "commont-c2": "配置插件昵称",
+            "commont-c3": " vscodePluginDemo.showTi 是否在启动时显示提示",
+            "properties": {
+                "vscodePluginDemo.yourName": {
+                    "type": "string",
+                    "default": "guest",
+                    "description": "你的名字"
+                },
+                
+                "vscodePluginDemo.showTip": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "是否在每次启动时显示欢迎提示！好像不起作用"
+                }
+            }
+        },
+        "commands": [
+            {
+                "comment-04": "命令调用的函数名称",
+                "command": "helloworld.helloWorld",
+                "comment-05": " title 显示在 ctrl+shift+p的命令上的名称",
+                "title": "Hello World"
+            }
+        ],
+        "comment-D1": " 快捷键绑定",
+        "keybindings": [
+          {
+              "command": "extension.helloWorld",
+              "key": "ctrl+f10",
+              "mac": "cmd+f10",
+              "when": "editorTextFocus"
+          }
+      ],
+      "comment-D2": " 菜单",
+      "menus": {
+        "editor/context":[
+          {"when": "editorFocus","command": "extension.helloWorld", "group": "navigation@6"}
+        ]
+      }
+    },
+    "scripts": {
+        "comment-06": "babel 编译ts",
+        "ts:build": "babel src --out-dir out --extensions .ts"
+    },
+    "author": "",
+    "license": "ISC"
+}

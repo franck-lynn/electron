@@ -1,0 +1,81 @@
+{
+  "name": "nitification",
+  "version": "1.0.0",
+  "description": "electron_study_by_lynn",
+  
+  
+  "A1-electron-build": "electron-build 是采用这个main",
+  "A2-main-build": "dist/main/main.js",
+  "A3-electron-dev": "electron-dev 是采用这个main",
+  "A4-main-dev": "src/main/main.ts",
+  
+  "main": "dist/main/main.js",
+  
+  
+  "scripts": {
+    "A1-comments": "vite 开发直接运行, 以下供开发时运行", 
+    "vite:dev": "cross-env MODE=development vite src/render --config vite.config.ts",
+    
+    "A2-comments": "ts 文件的构建", 
+    "ts:build": "babel src --out-dir dist --extensions .ts",
+    
+    "A3-comments": "electron 构建时命令, 由于时 loadURL('网址'), 不能直接运行", 
+    "electron": "electron .",
+    
+    "A5-comments": "同时启动vite服务器和 electron + ts 编译", 
+    "dev": "cross-env MODE=development concurrently  \"npm run electron\"   \"npm run ts:build\" \"npm run vite:dev\"",
+    
+    
+    "A6-comments": "vite 生产模式下构建静态文件, 以下供构建时运行", 
+    "vite:build":  "cross-env MODE=production vite build src/render --config vite.config.ts",
+    "build": "rimraf dist && npm run ts:build && npm run vite:build &&  npm run electron",
+    
+    
+    "A8-comments": "electron打包分别运行下面3个命令", 
+    "start": "electron-forge start",
+    "package": "electron-forge package",
+    "make": "electron-forge make"
+    
+  },
+  "author": "lynn",
+  "license": "ISC",
+  "dependencies": {
+    "core-js": "^3.17.1",
+    "electron-squirrel-startup": "^1.0.0"
+  },
+  "devDependencies": {
+    "@electron-forge/cli": "^6.0.0-beta.60",
+    "@electron-forge/maker-deb": "^6.0.0-beta.60",
+    "@electron-forge/maker-rpm": "^6.0.0-beta.60",
+    "@electron-forge/maker-squirrel": "^6.0.0-beta.60",
+    "@electron-forge/maker-zip": "^6.0.0-beta.60",
+    "electron": "14.0.0"
+  },
+  "config": {
+    "forge": {
+      "packagerConfig": {},
+      "makers": [
+        {
+          "name": "@electron-forge/maker-squirrel",
+          "config": {
+            "name": "babel_compile"
+          }
+        },
+        {
+          "name": "@electron-forge/maker-zip",
+          "platforms": [
+            "darwin"
+          ]
+        },
+        {
+          "name": "@electron-forge/maker-deb",
+          "config": {}
+        },
+        {
+          "name": "@electron-forge/maker-rpm",
+          "config": {}
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,86 @@
+"use strict";
+
+require("core-js/modules/es.array.join.js");
+
+var _path = _interopRequireDefault(require("path"));
+
+var _electron = require("electron");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+// electron 用的主入口文件
+// import electronReloader from 'electron-reloader'
+var mainWindow, childWindow;
+
+var createWindow = function createWindow() {
+  var _screen$getPrimaryDis = _electron.screen.getPrimaryDisplay().workAreaSize,
+      width = _screen$getPrimaryDis.width,
+      height = _screen$getPrimaryDis.height;
+
+  mainWindow = new _electron.BrowserWindow({
+    width: width / 2,
+    height: height / 2,
+    // 预加载文件
+    webPreferences: {
+      preload: _path["default"].join(__dirname, "../preload/preload.js"),
+      nodeIntegration: true,
+      // 是否继承 nodejs
+      nativeWindowOpen: false,
+      contextIsolation: false,
+      webviewTag: true // 支持 webView 自定义标签
+
+    }
+  });
+
+  _electron.ipcMain.on("open_dialog", function () {
+    _electron.dialog.showOpenDialog(mainWindow, {
+      title: "对话框窗口的标题",
+      properties: ["openFile", "multiSelections"]
+    });
+  }); // 打开调试模式
+
+
+  mainWindow.webContents.openDevTools();
+  var URL = "http://localhost:3000"; //! 环境变量, 设置为开发模式
+
+  var mode = process.env.Mode || "development";
+
+  if (mode === "development") {
+    mainWindow.loadURL(URL);
+  } else {
+    console.log("获取到的环境变量----> ", mode);
+    mainWindow.loadFile(_path["default"].resolve(__dirname, "./index.html"));
+  } // createChildWindow(mainWindow)
+
+
+  createChildWindow();
+};
+
+var createChildWindow = function createChildWindow() {
+  var _screen$getPrimaryDis2 = _electron.screen.getPrimaryDisplay().workAreaSize,
+      width = _screen$getPrimaryDis2.width,
+      height = _screen$getPrimaryDis2.height;
+
+  childWindow = new _electron.BrowserWindow({
+    width: width / 3,
+    height: height / 8,
+    parent: mainWindow,
+    title: "子窗口",
+    show: false
+  });
+  childWindow.once('ready-to-show', function () {
+    childWindow.show();
+  });
+};
+
+_electron.app.whenReady().then(createWindow); // app.whenReady().then(createDisplay)
+// 跨平台
+
+
+_electron.app.on("activate", function () {
+  if (_electron.BrowserWindow.getAllWindows().length === 0) createWindow();
+});
+
+_electron.app.on("window-all-closed", function () {
+  if (process.platform !== "darwin") _electron.app.quit();
+});
